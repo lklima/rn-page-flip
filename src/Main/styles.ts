@@ -76,16 +76,19 @@ export const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5,
+    borderRadius: 40,
   },
-  capturedView: {
+  mirrorView: {
     width: "100%",
     height: "100%",
     overflow: "hidden",
+    transform: [{ scaleY: 1 }],
   },
-  captured: {
+  mirror: {
     width: 375,
     height: "100%",
-    transform: [{ scaleX: -1 }],
+    opacity: 0.9,
+    position: "absolute",
   },
   gradient: {
     width: "100%",

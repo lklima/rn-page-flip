@@ -27,7 +27,9 @@ export default function Main() {
     .onUpdate((e) => {
       console.log(e.translationX);
 
-      translateX.value = Math.abs(e.translationX);
+      if (Math.abs(e.translationX) <= 255) {
+        translateX.value = Math.abs(e.translationX);
+      }
     })
     .onEnd((e) => {
       translateX.value = withTiming(0, { duration: 700 });
@@ -40,7 +42,11 @@ export default function Main() {
       format: "jpg",
       quality: 0.8,
     }).then(
-      (uri) => setCaptured(uri),
+      (uri) => {
+        if (!captured) {
+          setCaptured(uri);
+        }
+      },
       (error) => console.error(error)
     );
   };
@@ -69,6 +75,13 @@ export default function Main() {
     shadowColor: "black",
     shadowRadius: interpolate(translateX.value, [0, cardWith], [0, 80]),
     shadowOpacity: interpolate(translateX.value, [0, 100], [0.2, 0]),
+  }));
+
+  const mirrorAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: interpolate(translateX.value, [0, cardWith], [0, -50]) },
+      { scaleX: -1 },
+    ],
   }));
 
   return (
@@ -107,8 +120,13 @@ export default function Main() {
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
               />
-              <Animated.View style={[styles.capturedView, inShadowEffectAnimatedStyle]}>
-                {captured && <Image source={{ uri: captured }} style={styles.captured} />}
+              <Animated.View style={[styles.mirrorView, inShadowEffectAnimatedStyle]}>
+                {captured && (
+                  <Animated.Image
+                    source={{ uri: captured }}
+                    style={[styles.mirror, mirrorAnimatedStyle]}
+                  />
+                )}
               </Animated.View>
             </Animated.View>
           </Animated.View>
