@@ -69,6 +69,14 @@ export const styles = StyleSheet.create({
     color: "white",
     marginLeft: 3,
   },
+  // inner
+  innerEffect: {
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+    overflow: "hidden",
+    position: "absolute",
+  },
+  // flip
   flipEffect: {
     backgroundColor: "#ddd",
     width: 50,
@@ -76,13 +84,12 @@ export const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5,
-    borderRadius: 40,
+    overflow: "hidden",
   },
   mirrorView: {
     width: "100%",
     height: "100%",
     overflow: "hidden",
-    transform: [{ scaleY: 1 }],
   },
   mirror: {
     width: 375,

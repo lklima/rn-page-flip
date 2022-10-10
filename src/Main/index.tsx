@@ -32,7 +32,7 @@ export default function Main() {
       }
     })
     .onEnd((e) => {
-      translateX.value = withTiming(0, { duration: 700 });
+      translateX.value = withTiming(0, { duration: 600 });
     });
 
   const cardWith = 375;
@@ -41,30 +41,31 @@ export default function Main() {
     captureRef(contentRef.current, {
       format: "jpg",
       quality: 0.8,
-    }).then(
-      (uri) => {
-        if (!captured) {
-          setCaptured(uri);
-        }
-      },
-      (error) => console.error(error)
-    );
+    }).then((uri) => {
+      if (!captured) {
+        setCaptured(uri);
+      }
+    }, console.error);
   };
 
   const topAnimatedStyle = useAnimatedStyle(() => ({
     width: interpolate(translateX.value, [0, cardWith], [cardWith, 0]),
-  }));
-
-  const flipEffectAnimatedStyle = useAnimatedStyle(() => ({
-    width: interpolate(translateX.value, [0, 2, cardWith], [0, 15, 150]),
-    height: interpolate(translateX.value, [0, cardWith], [180, 200]),
     shadowOffset: {
       height: 0,
       width: interpolate(translateX.value, [0, cardWith], [5, 40]),
     },
     shadowColor: "black",
     shadowRadius: interpolate(translateX.value, [0, cardWith], [5, 40]),
-    shadowOpacity: interpolate(translateX.value, [0, cardWith], [0.8, 0]),
+    shadowOpacity: interpolate(translateX.value, [0, cardWith], [1, 0]),
+  }));
+
+  const innerEffectAnimatedStyle = useAnimatedStyle(() => ({
+    width: interpolate(translateX.value, [0, 80], [60, 180]),
+  }));
+
+  const flipEffectAnimatedStyle = useAnimatedStyle(() => ({
+    width: interpolate(translateX.value, [60, cardWith], [0, 180]),
+    height: interpolate(translateX.value, [60, cardWith], [180, 210]),
   }));
 
   const inShadowEffectAnimatedStyle = useAnimatedStyle(() => ({
@@ -113,7 +114,15 @@ export default function Main() {
                 </View>
               </View>
             </View>
-            <Animated.View style={[styles.flipEffect, flipEffectAnimatedStyle]}>
+            <Animated.View style={[styles.innerEffect, innerEffectAnimatedStyle]}>
+              <LinearGradient
+                style={styles.gradient}
+                colors={["transparent", "rgba(0, 0, 0, 0.5)"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            </Animated.View>
+            {/* <Animated.View style={[styles.flipEffect, flipEffectAnimatedStyle]}>
               <LinearGradient
                 style={styles.gradient}
                 colors={["rgba(0, 0, 0, 0.8)", "transparent", "rgba(0, 0, 0, 0.8)"]}
@@ -128,7 +137,7 @@ export default function Main() {
                   />
                 )}
               </Animated.View>
-            </Animated.View>
+            </Animated.View> */}
           </Animated.View>
         </View>
       </GestureDetector>
